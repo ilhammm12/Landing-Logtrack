@@ -1,0 +1,540 @@
+<!doctype html>
+<html class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* CSS: Hide all wrap-content divs by default */
+    .wrap-content {
+        display: none;
+    }
+
+    /* CSS: Active class styles */
+    .btn-roles.active {
+        background-color: #8b5cf6; /* Violet */
+        color: white;
+        transition: ease-in-out;
+    }
+    .btn-roles.active img {
+        background-color: #6d28d9; /* Darker violet for image background */
+    }
+    .nav-resv-style{
+      position: absolute;
+      top: 2rem;
+      left: 0;
+      z-index: 99;
+    }
+    .nav-resv-style li{
+      display: block;
+      width: 100%;
+      text-align: center;
+      margin-bottom: 0.25rem;
+    }
+    @media (min-width: 1280px) { 
+      .title-utama{
+        line-height: 4rem!important;
+      }
+      .subtitle-utama{
+        line-height: 2.5rem!important;
+      }
+     }
+  </style>
+  <script src="https://unpkg.com/taos@1.0.5/dist/taos.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          animation: {
+            'infinite-scroll': 'infinite-scroll 25s linear infinite',
+          },
+          keyframes: {
+            'infinite-scroll': {
+              from: { transform: 'translateY(0)' },
+              to: { transform: 'translateY(-100px)' },
+            }
+          }      
+        }
+      }
+    }
+  </script>
+</head>
+<body>
+  <body class="font-sans antialiased">
+    <!-- HEADER-->
+    <header class="bg-white">
+      <div class="grid grid-cols-12">
+        <!-- LEFT -->
+        <div class="col-span-full lg:col-span-8 xl:col-span-7">
+          <div class="lg:pl-14 pl-8 pr-8 pt-6 pb-10 h-full flex justify-between flex-col ">
+            <!-- NAV -->
+            <nav class="bg-white border-gray-200 dark:bg-gray-900 delay-[300ms] duration-[1000ms] taos:translate-y-[-200px] taos:opacity-0" data-taos-offset="0">
+              <div class="max-w-screen-xl relative flex flex-wrap items-center justify-between mx-auto">
+                <a href="" class="flex items-center space-x-3 rtl:space-x-reverse">
+                  <img src="logo-main.png" class="h-6" alt="">
+                </a>
+                <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-default" aria-expanded="false">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+                    </svg>
+                </button>
+                <div class="hidden w-full md:block md:w-auto" id="navbar-default">
+                  <ul class="font-medium flex flex-col items-center p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                    <li>
+                      <a href="#tentang-log" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-violet-700 md:p-0 dark:text-white md:dark:hover:text-violet-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Tentang</a>
+                    </li>
+                    <li>
+                      <a href="#benefit-log" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-violet-700 md:p-0 dark:text-white md:dark:hover:text-violet-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Benefit</a>
+                    </li>
+                    <li>
+                      <a href="#fitur-log" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-violet-700 md:p-0 dark:text-white md:dark:hover:text-violet-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Fitur</a>
+                    </li>
+                    <li>
+                      <a href="https://wa.me/628115949919?text=Halo%20saya%20ingin%20trial%20aplikasi%20Logtrack" class="box-border relative inline-flex items-center justify-center w-auto px-5 py-3 overflow-hidden font-bold text-white transition-all duration-300 bg-violet-600 rounded-full cursor-pointer group ring-offset-2 ring-2 ring-violet-300 ring-offset-violet-200 hover:ring-offset-violet-700 ease focus:outline-none">
+                        <span class="relative z-20 flex items-center text-sm">
+                          Kontak
+                        </span>
+                        <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/></svg>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </nav>
+            
+            <!-- TEXT -->
+            <div class="wrap-text-header py-12 lg:py-12 xl:py-0 delay-[0ms] duration-[1000ms] taos:translate-y-[200px] taos:opacity-0 [animation-iteration-count:infinite]" data-taos-offset="300">
+              <p class="mb-6 text-emerald-500 bg-emerald-50 font-semibold rounded-full text-sm px-3 py-1.5 text-center inline-flex items-center">
+                <span class="relative flex h-3 w-3 mr-4">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-3 w-3 bg-rose-500"></span>
+                </span>
+                #1 Mobile App Logistik IKN
+              </p>
+              <p class="text-4xl xl:text-5xl lg:w-5/6 font-extrabold capitalize text-slate-800 mb-4 title-utama">Monitoring operasional logistik dalam genggaman</p>
+              <p class="text-lg xl:text-xl lg:w-5/6 text-slate-600 subtitle-utama">Aplikasi manajemen operasional logistik dengan pelayanaan terbaik dan harga yang terjangkau</p>
+              <div class="mt-6 flex flex-row gap-4">
+                <!-- <button type="button" class="text-white bg-violet-600 hover:bg-violet-700 focus:ring-4 focus:outline-none focus:ring-violet-300 font-semibold rounded-full text-md px-5 py-2.5 text-center inline-flex items-center dark:bg-violet-600 dark:hover:bg-violet-700 dark:focus:ring-violet-800">
+                  Free Trial
+                </button> -->
+                <a href="https://wa.me/628115949919?text=Halo%20saya%20ingin%20trial%20aplikasi%20Logtrack" class="box-border relative inline-flex items-center justify-center w-auto px-5 py-3 overflow-hidden font-bold text-white transition-all duration-300 bg-violet-600 rounded-full cursor-pointer group ring-offset-2 ring-2 ring-violet-300 ring-offset-violet-200 hover:ring-offset-violet-700 ease focus:outline-none">
+                  <span class="relative z-20 flex items-center text-sm">
+                    Free Trial
+                  </span>
+                  <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/></svg>
+                </a>
+                <button type="button" class="text-slate-800 bg-slate-50 hover:bg-slate-100 font-medium rounded-full text-md px-5 py-2.5 text-center inline-flex items-center">
+                  Selengkapnya
+                </button>
+              </div>
+            </div>
+            
+            <!-- ETC -->
+            <div class="flex flex-row items-center gap-4 delay-[500ms] duration-[1000ms] taos:translate-x-[-100%] taos:invisible" data-taos-offset="0">
+              <p class="text-slate-700 text-sm">Collaboration of</p>
+              <img src="logo-gtn.png" class="h-11" alt="">
+              <img src="logo-tpb.png" class="h-10" alt="">
+            </div>
+
+          </div>
+        </div>
+        <!-- RIGHT -->
+        <div class="col-span-full lg:col-span-4 xl:col-span-5 delay-[300ms] duration-[1000ms] taos:translate-x-[100%] taos:invisible" data-taos-offset="0">
+          <img src="header-top.jpg" class="w-full max-h-full sm:max-h-64 md:max-h-96 lg:h-full lg:max-h-full xl:max-h-full object-cover object-top md:object-center " alt="">
+        </div>
+      </div>
+    </header>
+    <main>
+      <!-- About Section -->
+      <section id="tentang-log" class="bg-violet-600 text-white px-6 py-8 delay-[0ms] duration-[1000ms] taos:scale-[0.6] taos:opacity-0" data-taos-offset="200">
+        <div class="container mx-auto">
+          <div class="grid grid-cols-12 gap-4 items-start">
+            <div class="col-span-full md:col-span-4 lg:col-span-3">
+              <p class="text-md font-bold uppercase italic mb-2">Sekilas Tentang</p>
+              <img src="logo-main-putih.png" class="h-8" alt="">
+            </div>
+            <div class="col-span-full md:col-span-8 lg:col-span-7">
+              <p class="mb-3 leading-8">Aplikasi manajemen pemesanan transportasi logistik dengan memenuhi kebutuhan pengiriman berbagai jenis muatan serta monitoring seluruh unit logistik.</p>
+              <!-- <button type="button" class="text-white bg-orange-500 hover:bg-orange-600 focus:ring-4 focus:outline-none focus:ring-violet-300 font-semibold rounded-full text-sm px-4 py-1.5 text-center inline-flex items-center">
+                Free Trial
+                <svg class="rtl:rotate-180 w-2.5 h-2.5 ms-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/></svg>
+              </button> -->
+              <a href="https://wa.me/628115949919?text=Halo%20saya%20ingin%20trial%20aplikasi%20Logtrack" class="box-border relative inline-flex items-center justify-center w-auto px-5 py-3 overflow-hidden font-bold text-white transition-all duration-300 bg-orange-600 rounded-full cursor-pointer group ring-offset-2 ring-2 ring-orange-300 ring-offset-orange-200 hover:ring-offset-orange-700 ease focus:outline-none">
+                <span class="relative z-20 flex items-center text-sm">
+                  Daftar Sekarang
+                </span>
+                <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Benefits Section -->
+      <section id="benefit-log" class="bg-gray-950 py-16 px-6 overflow-hidden">
+        <div class="container mx-auto">
+          <div class="grid grid-cols-12 gap-4 items-start w-full items-center justify-center">
+            <div class="order-2 col-span-full md:order-1 md:col-start-3 md:col-span-8 lg:col-span-6 delay-[0ms] duration-[1000ms] taos:translate-x-[-200px] taos:opacity-0" data-taos-offset="0" >
+              <img src="benefit.png" class="h-full" alt="">
+            </div>
+            <div class="order-1 col-span-full md:order-2 md:col-span-full lg:col-span-6">
+              <div class="mb-10 delay-[0ms] duration-[1000ms] taos:translate-y-[-200px] taos:opacity-0" data-taos-offset="0">
+                <h2 class="text-4xl lg:text-5xl font-black text-white uppercase text-center lg:text-start italic">BENEFIT LOGTRACK</h2> 
+                <p class="opacity-80 text-white leading-7 text-center lg:text-start mt-2">Apa saja yang ada di logtrack</p>
+              </div>
+              <div class="grid grid-cols-12 gap-8 text-white">
+                <div class="col-span-full md:col-span-6 lg:col-span-full flex flex-row items-start gap-4 delay-[0ms] duration-[1000ms] taos:translate-y-[100px] taos:opacity-0" data-taos-offset="0">
+                  <img src="icon/Map Marker.png" class="h-16" alt="">
+                  <div>
+                    <p class="text-2xl mb-2 font-bold">Tracking Delivery</p>
+                    <p class="leading-7">Lacak pengiriman dan arus barang dengan mudah dalam satu platform.</p>
+                  </div>
+                </div>
+                <div class="col-span-full md:col-span-6 lg:col-span-full flex flex-row items-start gap-4 delay-[200ms] duration-[1000ms] taos:translate-y-[100px] taos:opacity-0" data-taos-offset="10">
+                  <img src="icon/Fast Forward.png" class="h-16" alt="">
+                  <div>
+                    <p class="text-2xl mb-2 font-bold">Real-time Notifications</p>
+                    <p class="leading-7">Dapatkan notifikasi secara real-time setiap aktivitas pengiriman berlangsung.</p>
+                  </div>
+                </div>
+                <div class="col-span-full md:col-span-6 lg:col-span-full flex flex-row items-start gap-4 delay-[400ms] duration-[1000ms] taos:translate-y-[100px] taos:opacity-0" data-taos-offset="20">
+                  <img src="icon/Bookmark.png" class="h-16" alt="">
+                  <div>
+                    <p class="text-2xl mb-2 font-bold">Detail Reporting</p>
+                    <p class="leading-7">Dapatkan laporan lengkap terkait pengiriman, armada driver, dan durasi aktivitas.</p>
+                  </div>
+                </div>
+                <div class="col-span-full md:col-span-6 lg:col-span-full flex flex-row items-start gap-4 delay-[500ms] duration-[1000ms] taos:translate-y-[100px] taos:opacity-0" data-taos-offset="30">
+                  <img src="icon/Play.png" class="h-16" alt="">
+                  <div>
+                    <p class="text-2xl mb-2 font-bold">Back-office Dashboard</p>
+                    <p class="leading-7">Pantau aktivitas dengan dashboard yang mudah digunakan, mempermudah pengelolaan operasional bisnis.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Roles Section -->
+      <section id="fitur-log" class="bg-white py-16 px-6 relative overflow-hidden">
+        <img src="vector/truk2.png" class="w-32 md:w-48 lg:w-64 absolute top-5 delay-[0] duration-[600ms] taos:[transform:translate3d(-200px,-200px,0)] taos:opacity-0" data-taos-offset="500" alt="" style="left: -5rem;">
+        <img src="vector/truk1.png" class="w-32 md:w-48 lg:w-64 absolute bottom-5 delay-[0] duration-[600ms] taos:[transform:translate3d(200px,-200px,0)] taos:opacity-0" data-taos-offset="500" alt="" style="right: -5rem;">
+        <div class="container mx-auto delay-[300ms] duration-[1000ms] taos:[transform:translate3d(0,200px,0)_scale(0.6)] taos:opacity-0" data-taos-offset="100">
+          
+          <div class="mb-8 text-center flex items-center flex-col">
+            <h2 class="text-4xl lg:text-5xl font-black text-slate-900 uppercase leading-tight italic w-full md:w-3/5 lg:w-1/2">KEMUDAHAN DALAM SETIAP PERAN</h2> 
+            <p class="opacity-80 text-slate-700 leading-7 mt-2">Aplikasi Logtrack memiliki 3 tipe user</p>
+          </div>
+
+          <div class="flex justify-center gap-x-4">
+            <button type="button" class="btn-roles active transition ease-in-out bg-violet-600 hover:bg-violet-800 focus:ring-4 focus:outline-none focus:ring-violet-300 font-semibold rounded-full text-md pl-4 pr-6 py-2.5 text-center inline-flex items-center" data-tab="1">
+                <img src="user/Rectangle.png" class="h-8 md:h-12 mr-2 lg:mr-4 bg-violet-700 p-1 rounded-full" alt="">
+                <span class="">Customer</span>
+            </button>
+            <button type="button" class="btn-roles transition ease-in-out bg-slate-50 hover:bg-slate-100 font-semibold rounded-full text-md pl-4 pr-6 py-2.5 text-center inline-flex items-center" data-tab="2">
+                <img src="user/Rectangle-1.png" class="h-8 md:h-12 mr-2 lg:mr-4 p-1 rounded-full" alt="">
+                <span>Foreman</span>
+            </button>
+            <button type="button" class="btn-roles transition ease-in-out bg-slate-50 hover:bg-slate-100 font-semibold rounded-full text-md pl-4 pr-6 py-2.5 text-center inline-flex items-center" data-tab="3">
+                <img src="user/Rectangle-2.png" class="h-8 md:h-12 mr-2 lg:mr-4 p-1 rounded-full" alt="">
+                <span>Driver</span>
+            </button>
+          </div>
+
+          <div class="wrap-content wrap-content-app-1 w-full">
+            <div class=" flex flex-col justify-center items-center gap-y-4 mt-8">
+              <ul class="flex flex-row flex-wrap gap-x-6 gap-y-3 justify-center">
+                <li class="flex flex-row items-center gap-x-2">
+                  <svg class="h-4" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 17.837 17.837" xml:space="preserve" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path style="fill:#09d409;" d="M16.145,2.571c-0.272-0.273-0.718-0.273-0.99,0L6.92,10.804l-4.241-4.27 c-0.272-0.274-0.715-0.274-0.989,0L0.204,8.019c-0.272,0.271-0.272,0.717,0,0.99l6.217,6.258c0.272,0.271,0.715,0.271,0.99,0 L17.63,5.047c0.276-0.273,0.276-0.72,0-0.994L16.145,2.571z"></path> </g> </g></svg>
+                  Dashboard Order
+                </li>
+                <li class="flex flex-row items-center gap-x-2">
+                  <svg class="h-4" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 17.837 17.837" xml:space="preserve" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path style="fill:#09d409;" d="M16.145,2.571c-0.272-0.273-0.718-0.273-0.99,0L6.92,10.804l-4.241-4.27 c-0.272-0.274-0.715-0.274-0.989,0L0.204,8.019c-0.272,0.271-0.272,0.717,0,0.99l6.217,6.258c0.272,0.271,0.715,0.271,0.99,0 L17.63,5.047c0.276-0.273,0.276-0.72,0-0.994L16.145,2.571z"></path> </g> </g></svg>
+                  Request Order
+                </li>
+                <li class="flex flex-row items-center gap-x-2">
+                  <svg class="h-4" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 17.837 17.837" xml:space="preserve" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path style="fill:#09d409;" d="M16.145,2.571c-0.272-0.273-0.718-0.273-0.99,0L6.92,10.804l-4.241-4.27 c-0.272-0.274-0.715-0.274-0.989,0L0.204,8.019c-0.272,0.271-0.272,0.717,0,0.99l6.217,6.258c0.272,0.271,0.715,0.271,0.99,0 L17.63,5.047c0.276-0.273,0.276-0.72,0-0.994L16.145,2.571z"></path> </g> </g></svg>
+                  Tracking Order
+                </li>
+              </ul>
+              <img src="cust-app.png" class="h-full lg:w-3/5" alt="">
+            </div>
+          </div>
+          <div class="wrap-content wrap-content-app-2 w-full">
+            <div class=" flex flex-col justify-center items-center gap-y-4 mt-8">
+              <ul class="flex flex-row flex-wrap gap-x-6 gap-y-3 justify-center">
+                <li class="flex flex-row items-center gap-x-2">
+                  <svg class="h-4" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 17.837 17.837" xml:space="preserve" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path style="fill:#09d409;" d="M16.145,2.571c-0.272-0.273-0.718-0.273-0.99,0L6.92,10.804l-4.241-4.27 c-0.272-0.274-0.715-0.274-0.989,0L0.204,8.019c-0.272,0.271-0.272,0.717,0,0.99l6.217,6.258c0.272,0.271,0.715,0.271,0.99,0 L17.63,5.047c0.276-0.273,0.276-0.72,0-0.994L16.145,2.571z"></path> </g> </g></svg>
+                  Tracking Order
+                </li>
+                <li class="flex flex-row items-center gap-x-2">
+                  <svg class="h-4" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 17.837 17.837" xml:space="preserve" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path style="fill:#09d409;" d="M16.145,2.571c-0.272-0.273-0.718-0.273-0.99,0L6.92,10.804l-4.241-4.27 c-0.272-0.274-0.715-0.274-0.989,0L0.204,8.019c-0.272,0.271-0.272,0.717,0,0.99l6.217,6.258c0.272,0.271,0.715,0.271,0.99,0 L17.63,5.047c0.276-0.273,0.276-0.72,0-0.994L16.145,2.571z"></path> </g> </g></svg>
+                  Dashboard Summary
+                </li>
+                <li class="flex flex-row items-center gap-x-2">
+                  <svg class="h-4" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 17.837 17.837" xml:space="preserve" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path style="fill:#09d409;" d="M16.145,2.571c-0.272-0.273-0.718-0.273-0.99,0L6.92,10.804l-4.241-4.27 c-0.272-0.274-0.715-0.274-0.989,0L0.204,8.019c-0.272,0.271-0.272,0.717,0,0.99l6.217,6.258c0.272,0.271,0.715,0.271,0.99,0 L17.63,5.047c0.276-0.273,0.276-0.72,0-0.994L16.145,2.571z"></path> </g> </g></svg>
+                  Manage Order
+                </li>
+              </ul>
+              <img src="foreman-app.png" class="h-full lg:w-3/5" alt="">
+            </div>
+          </div>
+          <div class="wrap-content wrap-content-app-3 w-full">
+            <div class=" flex flex-col justify-center items-center gap-y-4 mt-8">
+              <ul class="flex flex-row flex-wrap gap-x-6 gap-y-3 justify-center">
+                <li class="flex flex-row items-center gap-x-2">
+                  <svg class="h-4" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 17.837 17.837" xml:space="preserve" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path style="fill:#09d409;" d="M16.145,2.571c-0.272-0.273-0.718-0.273-0.99,0L6.92,10.804l-4.241-4.27 c-0.272-0.274-0.715-0.274-0.989,0L0.204,8.019c-0.272,0.271-0.272,0.717,0,0.99l6.217,6.258c0.272,0.271,0.715,0.271,0.99,0 L17.63,5.047c0.276-0.273,0.276-0.72,0-0.994L16.145,2.571z"></path> </g> </g></svg>
+                  Confirm Order
+                </li>
+                <li class="flex flex-row items-center gap-x-2">
+                  <svg class="h-4" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 17.837 17.837" xml:space="preserve" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path style="fill:#09d409;" d="M16.145,2.571c-0.272-0.273-0.718-0.273-0.99,0L6.92,10.804l-4.241-4.27 c-0.272-0.274-0.715-0.274-0.989,0L0.204,8.019c-0.272,0.271-0.272,0.717,0,0.99l6.217,6.258c0.272,0.271,0.715,0.271,0.99,0 L17.63,5.047c0.276-0.273,0.276-0.72,0-0.994L16.145,2.571z"></path> </g> </g></svg>
+                  Schedule Order
+                </li>
+                <li class="flex flex-row items-center gap-x-2">
+                  <svg class="h-4" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 17.837 17.837" xml:space="preserve" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path style="fill:#09d409;" d="M16.145,2.571c-0.272-0.273-0.718-0.273-0.99,0L6.92,10.804l-4.241-4.27 c-0.272-0.274-0.715-0.274-0.989,0L0.204,8.019c-0.272,0.271-0.272,0.717,0,0.99l6.217,6.258c0.272,0.271,0.715,0.271,0.99,0 L17.63,5.047c0.276-0.273,0.276-0.72,0-0.994L16.145,2.571z"></path> </g> </g></svg>
+                  Live Report Order
+                </li>
+              </ul>
+              <img src="driver-app.png" class="h-full lg:w-3/5" alt="">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- How it Works Section -->
+      <section class="bg-neutral-50 py-16 px-6">
+        <div class="container mx-auto">
+          <h2 class="text-4xl lg:text-5xl font-black text-slate-900 text-center uppercase leading-tight italic mb-8 delay-[300ms] duration-[600ms] taos:translate-y-[-200px] taos:opacity-0" data-taos-offset="0">CARA KERJA LOGTRACK</h2> 
+          <div class="grid grid-cols-12 gap-8 text-center">
+            <div class="col-span-full md:col-span-6 lg:col-span-4 delay-[0] duration-[600ms] taos:translate-x-[-200px] taos:opacity-0" data-taos-offset="0">
+              <div class="text-3xl rounded-full p-4 font-bold text-white mb-8 bg-orange-500 inline-block">01</div>
+              <h3 class="text-xl mb-3 font-bold">Customer Request Order</h3>
+              <p class="text-gray-700 leading-7 w-5/6 md:w-full lg:w-5/6 mx-auto">Permintaan pengiriman barang, menetapkan lokasi awal hingga lokasi tujuan akhir.</p>
+            </div>                                                                                                                                                                                                                                                                                                              
+            <div class="col-span-full md:col-span-6 lg:col-span-4 delay-[100] duration-[600ms] taos:translate-y-[100px] taos:opacity-0" data-taos-offset="0">
+              <div class="text-3xl rounded-full p-4 font-bold text-white mb-8 bg-orange-500 inline-block">02</div>
+              <h3 class="text-xl mb-3 font-bold">Foreman Manage Order</h3>
+              <p class="text-gray-700 leading-7 w-5/6 md:w-full lg:w-5/6 mx-auto">Mengkonfirmasi request order dan mengatur delivery order kepada driver.</p>
+            </div>
+            <div class="col-span-full md:col-span-6 lg:col-span-4 delay-[200] duration-[600ms] taos:translate-x-[200px] taos:opacity-0" data-taos-offset="0">
+              <div class="text-3xl rounded-full p-4 font-bold text-white mb-8 bg-orange-500 inline-block">03</div>
+              <h3 class="text-xl mb-3 font-bold">Driver on Delivery</h3>
+              <p class="text-gray-700 leading-7 w-5/6 md:w-full lg:w-5/6 mx-auto">Mengirimkan pesanan dari titik awal ke tujuan, hingga selesai order.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+       <!-- Why Section -->
+       <section class="py-16 px-6">
+        <div class="container mx-auto">
+          <div class="grid grid-cols-12 gap-4 w-full items-start justify-center">
+            <div class="col-span-full order-2 md:col-span-full lg:order-1 lg:col-span-6 delay-[0ms] duration-[1000ms] taos:translate-x-[-200px] taos:opacity-0" data-taos-offset="0">
+              <img src="contractor.jpg" class="w-full max-h-64 md:max-h-96 lg:max-h-full rounded object-cover" alt="">
+            </div>
+            <div class="col-span-full order-1 md:col-span-full lg:order-2 lg:col-span-6">
+              <h2 class="text-4xl lg:text-5xl font-black uppercase text-center lg:text-start italic mb-10 delay-[0ms] duration-[1000ms] taos:translate-y-[-200px] taos:opacity-0" data-taos-offset="0">KENAPA MEMILIH LOGTRACK</h2> 
+              <div class="flex flex-col gap-8 w-full">
+                <div class="flex flex-row items-start gap-4 delay-[0ms] duration-[1000ms] taos:translate-y-[100px] taos:opacity-0" data-taos-offset="0">
+                  <img src="icon/Cursor.png" class="h-16" alt="">
+                  <div>
+                    <p class="text-2xl mb-2 font-bold">Meningkatkan Efisiensi</p>
+                    <p class="leading-7 w-full text-gray-700">Dengan LogTrack, proses pengiriman lebih efisien, sehingga bisnis Anda berjalan lebih lancar dan cepat</p>
+                  </div>
+                </div>
+                <div class="flex flex-row items-start gap-4 delay-[200ms] duration-[1000ms] taos:translate-y-[100px] taos:opacity-0" data-taos-offset="10">
+                  <img src="icon/Home.png" class="h-16" alt="">
+                  <div>
+                    <p class="text-2xl mb-2 font-bold">Aman dan Terpercaya</p>
+                    <p class="leading-7 w-full text-gray-700">Semua data pengiriman dan lokasi Anda disimpan dengan aman dan bisa diakses kapan saja dengan mudah</p>
+                  </div>
+                </div>
+                <div class="flex flex-row items-start gap-4 delay-[400ms] duration-[1000ms] taos:translate-y-[100px] taos:opacity-0" data-taos-offset="20">
+                  <img src="icon/User.png" class="h-16" alt="">
+                  <div>
+                    <p class="text-2xl mb-2 font-bold">Kemudahan Penggunaan</p>
+                    <p class="leading-7 w-full text-gray-700">Aplikasi kami dirancang user-friendly, sangat mudah digunakan baik di desktop maupun perangkat mobile.</p>
+                  </div>
+                </div>
+                <div class="text-center lg:text-start delay-[500ms] duration-[1000ms] taos:translate-y-[100px] taos:opacity-0" data-taos-offset="30">
+                  <a href="https://wa.me/628115949919?text=Halo%20saya%20ingin%20trial%20aplikasi%20Logtrack" class="box-border relative inline-flex items-center justify-center w-auto px-5 py-3 overflow-hidden font-bold text-white transition-all duration-300 bg-violet-600 rounded-full cursor-pointer group ring-offset-2 ring-2 ring-violet-300 ring-offset-violet-200 hover:ring-offset-violet-700 ease focus:outline-none">
+                    <span class="relative z-20 flex items-center text-sm">
+                      Free Trial
+                    </span>
+                    <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/></svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Call to Action Section -->
+      <section class="bg-violet-700 text-white mt-10">
+        <div class="container mx-auto">
+          <div class="grid grid-cols-12 gap-x-10 items-start w-full items-center justify-center px-6 pb-6 lg:py-0 pt-6">
+            <div class="col-span-8 col-start-3 lg:col-span-5 lg:col-start-2 delay-[0ms] duration-[600ms] taos:translate-y-[40%] taos:invisible" data-taos-offset="0">
+              <img src="device.png" class="w-full relative infinite-scroll" alt="" style="top: -3.5rem;">
+            </div>
+            <div class="col-span-full lg:col-span-6 xl:col-span-6 text-white">
+              <p class="title-utama text-4xl lg:text-start text-center lg:text-5xl font-extrabold capitalize leading-tight text-white mb-4 delay-[0ms] duration-[1000ms] taos:translate-y-[100px] taos:opacity-0" data-taos-offset="0">Optimalkan Pengriman Anda Dengan Logtrack!</p>
+              <p class="subtitle-utama text-xl lg:w-5/6 leading-relaxed text-white lg:text-start text-center delay-[200ms] duration-[1000ms] taos:translate-y-[100px] taos:opacity-0" data-taos-offset="0">Mulai Sekarang dan nikmati layanan tracking pengiriman barang terbaik untuk bisnis Anda!</p>
+              <div class="mt-6 flex flex-row flex-wrap lg:flex-nowrap lg:items-start items-center justify-center gap-4 delay-[400ms] duration-[1000ms] taos:translate-y-[100px] taos:opacity-0" data-taos-offset="0">
+                <!-- <button type="button" class="text-white justify-between lg:w-full bg-orange-600 hover:bg-orange-700 focus:ring-4 focus:outline-none focus:ring-violet-300 font-semibold rounded-full text-md px-5 py-2.5 text-center inline-flex items-center dark:bg-violet-600 dark:hover:bg-violet-700 dark:focus:ring-violet-800">
+                  Daftar Sekarang | Free Trial
+                  <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/></svg>
+                </button> -->
+                <a href="https://wa.me/628115949919?text=Halo%20saya%20ingin%20trial%20aplikasi%20Logtrack" class="lg:w-full box-border relative inline-flex items-center justify-between w-auto px-5 py-3 overflow-hidden font-bold text-white transition-all duration-300 bg-orange-600 rounded-full cursor-pointer group ring-offset-2 ring-2 ring-orange-300 ring-offset-orange-200 hover:ring-offset-orange-700 ease focus:outline-none">
+                  <span class="relative z-20 flex items-center text-sm">
+                    Daftar Sekarang | Free Trial
+                  </span>
+                  <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/></svg>
+                </a>
+                <p class="text-white font-bold text-md py-2.5 text-center block w-full lg:inline-flex lg:w-full">
+                  IDR 20.000/user/Bulan
+                </p>
+              </div>
+              <p class="text-md font-medium lg:text-sm text-center lg:text-start text-white opacity-70 mt-6 mb-3 delay-[500ms] duration-[1000ms] taos:translate-y-[100px] taos:opacity-0" data-taos-offset="0">Logtrack tersedia di</p>
+              <div class="flex items-center justify-center lg:items-start lg:justify-start gap-4 delay-[500ms] duration-[1000ms] taos:translate-y-[100px] taos:opacity-0" data-taos-offset="0">
+                <img src="icon/1.png" alt="App Store" class="w-48 lg:w-32">
+                <img src="icon/2.png" alt="Google Play" class="w-48 lg:w-32">
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-gray-900 delay-[0ms] duration-[600ms] taos:scale-[0.6] taos:opacity-0" data-taos-offset="0">
+        <div class="mx-auto w-full max-w-screen-xl px-6 py-6 lg:py-8">
+            <div class="grid grid-cols-12 gap-4 ">
+              <div class="col-span-6 md:col-span-6 lg:col-span-4 mb-6 md:mb-0">
+                  <a href="" class="">
+                    <img src="logo-main.png" class="h-6" alt="">
+                    <p class="text-slate-500 mt-4">Monitoring Logistik Dalam Genggaman</p>
+                  </a>
+                  <div class="flex mt-8">
+                      <a href="#" class="text-gray-500 hover:text-gray-900 dark:hover:text-white">
+                          <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 8 19">
+                                <path fill-rule="evenodd" d="M6.135 3H8V0H6.135a4.147 4.147 0 0 0-4.142 4.142V6H0v3h2v9.938h3V9h2.021l.592-3H5V3.591A.6.6 0 0 1 5.592 3h.543Z" clip-rule="evenodd"/>
+                            </svg>
+                          <span class="sr-only">Facebook page</span>
+                      </a>
+                      <a href="#" class="text-gray-500 hover:text-gray-900 dark:hover:text-white ms-5">
+                          <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 17">
+                            <path fill-rule="evenodd" d="M20 1.892a8.178 8.178 0 0 1-2.355.635 4.074 4.074 0 0 0 1.8-2.235 8.344 8.344 0 0 1-2.605.98A4.13 4.13 0 0 0 13.85 0a4.068 4.068 0 0 0-4.1 4.038 4 4 0 0 0 .105.919A11.705 11.705 0 0 1 1.4.734a4.006 4.006 0 0 0 1.268 5.392 4.165 4.165 0 0 1-1.859-.5v.05A4.057 4.057 0 0 0 4.1 9.635a4.19 4.19 0 0 1-1.856.07 4.108 4.108 0 0 0 3.831 2.807A8.36 8.36 0 0 1 0 14.184 11.732 11.732 0 0 0 6.291 16 11.502 11.502 0 0 0 17.964 4.5c0-.177 0-.35-.012-.523A8.143 8.143 0 0 0 20 1.892Z" clip-rule="evenodd"/>
+                        </svg>
+                          <span class="sr-only">Twitter page</span>
+                      </a>
+                  </div>
+              </div>
+              <div class="col-span-6 md:col-span-6 lg:col-span-2">
+                  <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Menu</h2>
+                  <ul class="text-gray-500 dark:text-gray-400 font-medium">
+                      <li class="mb-3">
+                          <a href="#tentang-log" class="hover:underline">Tentang</a>
+                      </li>
+                      <li class="mb-3">
+                          <a href="#benefit-log" class="hover:underline">Benefit</a>
+                      </li>
+                      <li class="mb-3">
+                          <a href="#fitur-log" class="hover:underline">Fitur</a>
+                      </li>
+                      <li class="mb-3">
+                          <a href="https://wa.me/628115949919?text=Halo%20saya%20ingin%20trial%20aplikasi%20Logtrack" class="hover:underline">Register</a>
+                      </li>
+                  </ul>
+              </div>
+              <div class="col-span-full md:col-span-6 lg:col-span-3">
+                  <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Kontak Kami</h2>
+                  <ul class="text-gray-500 dark:text-gray-400 font-medium text-sm">
+                      <li class="mb-3">
+                          <p class="text-violet-500 font-bold">PT. GATRIA TANGGUH NUSANTARA</p>
+                      </li>
+                      <li class="mb-3">
+                        <p class="">Ruko Sentra Eropa AB5 No.21 RT. 09 Balikpapan Baru
+                          Kel. Damai Baru Kec. Balikpapan Selatan
+                          Kota Balikpapan, Kalimantan Timur 76114</p>
+                      </li>
+                      <li class="mb-3">
+                          <p class="text-slate-700 font-semibold">marketing@gatrianusantara.com</p>
+                      </li>
+                      <li class="mb-3">
+                          <p class="text-slate-700 font-semibold">62811-5949-919</p>
+                      </li>
+                  </ul>
+              </div>
+              <div class="col-span-full md:col-span-6 lg:col-span-3 self-end">
+                  <!-- <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Kontak Kami</h2> -->
+                  <ul class="text-gray-500 dark:text-gray-400 font-medium text-sm">
+                      <li class="mb-3">
+                          <p class="text-violet-500 font-bold">PT. TRISATRIA PERSADA BORNEO</p>
+                      </li>
+                      <li class="mb-3">
+                        <p class="">Komplek Balikpapan Baru Fantasy Junction Block FJ4 No. 15
+                          Kel. Damai Baru, Kec. Balikpapan Selatan, 
+                          Kota Balikpapan, Kalimantan Timur 76114</p>
+                      </li>
+                      <li class="mb-3">
+                          <p class="text-slate-700 font-semibold">marketing@trisatriaborneo.com</p>
+                      </li>
+                      <li class="mb-3">
+                          <p class="text-slate-700 font-semibold">62 811-5396-669 / 62 811-597-978</p>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+          <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700" />
+          <div class="text-center">
+              <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2024 <a href="" class="hover:underline">Logtrack</a>. All Rights Reserved.</span>
+          </div>
+        </div>
+    </footer>
+  <script src="https://unpkg.com/taos@1.0.5/dist/taos.js"></script>
+  <script>
+    // JavaScript: Function to show content based on selected button
+    document.querySelectorAll('.btn-roles').forEach(button => {
+        button.addEventListener('click', () => {
+            // Hide all content sections
+            document.querySelectorAll('.wrap-content').forEach(content => {
+                content.style.display = 'none';
+            });
+
+            // Show the relevant content section based on data-tab attribute
+            const tabId = button.getAttribute('data-tab');
+            document.querySelector(`.wrap-content-app-${tabId}`).style.display = 'block';
+
+            // Remove active classes from all buttons and images
+            document.querySelectorAll('.btn-roles').forEach(btn => {
+                btn.classList.remove('bg-violet-600', 'text-white', 'hover:bg-violet-800', 'focus:ring-4', 'focus:outline-none', 'focus:ring-violet-300', 'active');
+                btn.querySelector('img').classList.remove('bg-violet-700');
+                btn.classList.add('bg-slate-50', 'text-slate-900'); // Reset other buttons to slate style
+            });
+
+            // Add active classes to the clicked button and its image
+            button.classList.add('bg-violet-600', 'text-white', 'hover:bg-violet-800', 'focus:ring-4', 'focus:outline-none', 'focus:ring-violet-300', 'active');
+            button.querySelector('img').classList.add('bg-violet-700');
+        });
+    });
+
+    // Initial display setup: show the first tab content
+    document.querySelector('.wrap-content-app-1').style.display = 'block';
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const button = document.querySelector('[data-collapse-toggle="navbar-default"]');
+      const navbar = document.getElementById('navbar-default');
+
+      button.addEventListener('click', function() {
+        // Toggle class 'hidden' untuk menampilkan atau menyembunyikan navbar
+        navbar.classList.toggle('hidden');
+        navbar.classList.toggle('nav-resv-style');
+      });
+    });
+  </script>
+</body>
+</html>
